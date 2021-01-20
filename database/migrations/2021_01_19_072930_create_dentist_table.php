@@ -19,6 +19,7 @@ class CreateDentistTable extends Migration
             $table->binary('photo')->nullable();
 
             $table->foreign('dentist_id')->references('id')->on('users');
+            $table->foreign('clinic_id')->references('id')->on('clinic');
         });
     }
 

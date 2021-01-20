@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DB\MyDB;
 
 class HomeController extends Controller
 {
@@ -21,8 +22,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $data = MyDB::select_dentist_users_info();
+        $person_id =  MyDB::select_person_id($request->user()->id);
+        return view('home', ['dentists' => $data, 'person' => $person_id]);
+    }
+
+    public function create_role(Request $request, $id, $role){
+        if(isset($role)){
+            MyDB::insert_dentist($id);
+        }else{
+            MyDB::insert_person($id);
+        }
     }
 }
