@@ -6,6 +6,20 @@ use Illuminate\Support\Facades\DB;
 
 class MyDB
 {
+    public static function select_users(){
+        $users = DB::select("SELECT name, phone, surname, id FROM users LEFT JOIN dentist ON dentist.dentist_id=users.id WHERE dentist.dentist_id IS NULL");
+        return $users;
+    }
+
+    public static function select_all_users(){
+        $users = DB::select("SELECT name, phone, surname, id FROM users;");
+        return $users;
+    }
+
+    public static function select_clinics(){
+        $clinics = DB::select("SELECT * FROM clinic");
+        return $clinics;
+    }
 
     public static function select_person_id($user_id){
         $id = DB::select("SELECT person_id FROM person WHERE person_id=?;", [$user_id]);
@@ -109,7 +123,7 @@ class MyDB
    public static function update_dentist($array){
         DB::update("UPDATE dentist SET clinic_id=?, photo=? WHERE dentist_id=?;",
             [$array['clinic_id'], $array['photo'], $array['id']]);
-}
+    }
 
 
    public static function insert_clinic($array){
@@ -121,6 +135,11 @@ class MyDB
         DB::insert("INSERT INTO dentist(dentist_id, clinic_id) VALUES(?, 1);",
             [$clinic_id]);
    }
+
+   public static function insert_dentist_($data){
+    DB::insert("INSERT INTO dentist(dentist_id, clinic_id) VALUES(?, ?);",
+        [$data["dentist_id"], $data["clinic_id"]]);
+}
 
    public static function insert_person($person_id){
         DB::insert("INSERT INTO person(person_id) VALUES(?);",
@@ -140,5 +159,9 @@ class MyDB
     public static function insert_message($array){
         DB::insert("INSERT INTO message(chat_id, user_id, message_text, date_create) VALUES(?, ?, ?, ?);",
                 [$array['chat_id'], $array['user_id'], $array['message_text'], $array['date_create']]);
-        }
+    }
+
+    public static function delete_user($user_id){
+        DB::delete("DELETE FROM users WHERE id=?;", [$user_id]);
+    }
 }

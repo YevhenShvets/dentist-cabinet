@@ -58,12 +58,14 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @auth('web')
                                     <a class="dropdown-item" href="{{ route('cabinet') }}">
                                         {{ __('Кабінет') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('settings') }}">
                                         {{ __('Налаштування') }}
                                     </a>
+                                    @endauth
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -84,6 +86,13 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        @auth('admin')
+            <div class="isadmin">
+                <span>Авторизовано як адміністратор</span>
+                <a href="{{ route('admin.home') }}" class="btn btn-warning">Головна сторінка</a>
+            </div>
+        @endauth
     </div>
 </body>
 </html>

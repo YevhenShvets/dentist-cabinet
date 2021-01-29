@@ -102,6 +102,7 @@ class UserController extends Controller
                 'phone' => $request->input("phone")
             );
             MyDB::update_user_data($data);
+            MyDB::insert_person($request->user()->id);
             return redirect()->route('cabinet');
         }
     }

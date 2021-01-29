@@ -18,3 +18,23 @@ Route::post('/cabinet/record/{id}/message_create', [App\Http\Controllers\UserCon
 Route::get('/settings', [App\Http\Controllers\UserController::class, 'settings'])->name('settings');
 Route::post('/settings/update', [App\Http\Controllers\UserController::class, 'settings_update'])->name('settings_update');
 Route::post('/settings/update/dentist', [App\Http\Controllers\UserController::class, 'settings_update_dentist'])->name('settings_update_dentist');
+
+
+Route::prefix('admin')->middleware('guest:admin')->group(function () {                       
+    Route::get('/login',  [App\Http\Controllers\AdminController::class, 'showLoginForm'])->name('admin.login');  
+    Route::post('/login', [App\Http\Controllers\AdminController::class, 'Login'])->name('admin.login.submit');
+});
+
+Route::prefix('admin')->middleware('auth:admin')->group(function () {
+    Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
+
+    Route::get('/add/clinic', [App\Http\Controllers\AdminController::class, 'add_clinic'])->name('admin.add_clinic');
+    Route::post('/add/clinic', [App\Http\Controllers\AdminController::class, 'add_clinic_submit'])->name('admin.add_clinic_submit');
+
+    Route::get('/add/dentist', [App\Http\Controllers\AdminController::class, 'add_dentist'])->name('admin.add_dentist');
+    Route::post('/add/dentist', [App\Http\Controllers\AdminController::class, 'add_dentist_submit'])->name('admin.add_dentist_submit');
+
+    Route::get('/delete/user', [App\Http\Controllers\AdminController::class, 'delete_user'])->name('admin.delete_user');
+    Route::post('/delete/user', [App\Http\Controllers\AdminController::class, 'delete_user_submit'])->name('admin.delete_user_submit');
+
+});
