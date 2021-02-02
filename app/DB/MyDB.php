@@ -42,6 +42,18 @@ class MyDB
         return $user;
    }
 
+   public static function get_person_data($user_id){
+    $data = DB::select("SELECT id, name, middlename, surname, date_birthday, phone, email FROM users INNER JOIN person ON users.id=person.person_id WHERE id=?;",
+        [$user_id]);
+
+    if(count($data)>0){
+        $user = $data[0];
+    }else{
+       $user = NULL;
+    }
+    return $user;
+}
+
    public static function get_user_id($email, $phone){
        $id = DB::select("SELECT id FROM users WHERE email=? AND phone=?", [$email, $phone]);
         if(count($id)>0){

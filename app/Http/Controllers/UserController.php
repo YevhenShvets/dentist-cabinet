@@ -54,7 +54,9 @@ class UserController extends Controller
     public function record_info(Request $request, $id){
         $user_id = $request->user()->id;
         $record_data = MyDB::select_record_info($id);
-        $person_info = MyDB::get_user_data($record_data->person_id);
+        $person_info = MyDB::get_person_data($user_id);
+        if($person_info) $person_info = NULL;
+        else $person_info = MyDB::get_user_data($user_id);
         $messages = MyDB::select_messages($id);
         return  view('user.record', ['record' => $record_data, 'person_info' => $person_info, 'messages' => $messages]);
     }
