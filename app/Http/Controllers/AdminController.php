@@ -60,10 +60,26 @@ class AdminController extends Controller
     }
 
     public function add_dentist(){
-        $users = MyDB::select_users();
+        $users = MyDB::select_not_clinic_dentist();
         $clinics = MyDB::select_clinics();
 
         return view('admin.add_dentist', ['users' => $users, 'clinics' => $clinics]);
+    }
+
+
+    public function edit_clinic($id){
+        $clinic = MyDB::select_clinic($id);
+
+        return view('admin.edit_clinic', ['clinic' => $clinic, 'clinic_id' => $id]);
+    }
+
+    public function edit_clinic_submit(Request $req, $id){
+        $title = $req->input('title');
+        $address = $req->input('address');
+        $description = $req->input('description');
+
+        MyDB::update_clinic($id, $title, $address, $description);
+        return redirect()->route('admin.home');
     }
 
     public function add_dentist_submit(Request $request){
@@ -106,5 +122,34 @@ class AdminController extends Controller
             MyDB::delete_user($request->input('user_id'));
             return redirect()->route('admin.home');
         }
+    }
+
+
+    public function show_feedbacks(Request $req){
+        $feedbacks = MyDB::select_feedbacks();
+
+        return view('admin.feedbacks', ['feedbacks' => $feedbacks]);
+    }
+
+    public function show_feedbacks_submit(Request $req){
+        $feedback_id = $req->input('id');
+        $publish = $req->input('publish');
+        // dd($publish);
+        MyDB::update_feedback($feedback_id, $publish);
+
+        return redirect()->route('admin.show_feedbacks');
+    }
+
+    public function show_contacts(){
+        $contacts = MyDB::select_contacts();
+
+        return view('admin.contacts', ['contacts' => $contacts]);
+    }
+
+    public function show_contacts_submit(Request $request){
+        $contact_id = $request->input('id');
+        MyDB::update_contact($contact_id);
+
+        return redirect()->route('admin.show_contacts');
     }
 }

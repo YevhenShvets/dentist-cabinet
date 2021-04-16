@@ -5,8 +5,8 @@
 @section('content')
 <div class="container">
 <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card" style="background-color: #fdafad;">
+        <div class="col-md-8">
+            <div class="card" style="background-color: rgba(244,208,208,0.69);">
                 <div class="card-header">{{ __('Вилучення користувача') }}</div>
 
                 <div class="card-body">

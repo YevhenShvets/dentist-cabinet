@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('links')
 </head>
 <body>
     <div id="app">
@@ -94,5 +95,14 @@
             </div>
         @endauth
     </div>
+    <footer class="text-muted">
+    <hr>
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Вверх</a>
+        </p>
+        <a href="{{ route('contacts') }}">Замовити консультацію?</a>
+      </div>
+    </footer>
 </body>
 </html>

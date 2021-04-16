@@ -16,7 +16,7 @@ class Person extends Migration
         Schema::create('person', function (Blueprint $table) {
             $table->unsignedBigInteger('person_id');
 
-            $table->foreign('person_id')->references('id')->on('users');
+            $table->foreign('person_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

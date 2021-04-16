@@ -30,3 +30,10 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
 });
+
+
+var xpath = '//*[@id="clinics"]/div/div[2]/nav/div[2]/div[1]/p';
+
+var matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+matchingElement.style.color = "transparent";

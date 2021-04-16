@@ -21,7 +21,7 @@
             <div class="text-left" style="font-size: large;">
                 <span>Вік: </span><span>{{ intval(date('Y', time() - strtotime($dentist->date_birthday))) - 1970 }}</span><br>
                 <span>Номер телефону: </span><span>{{ $dentist->phone }}</span><br>
-                <span>Стоматологія: </span><span class="text-info"><a href="#" target="_blank">{{ $dentist->title }}</a></span><br>
+                <span>Стоматологія: </span><span class="text-info"><a href="{{ route('clinic', $dentist->clinic_id) }}" target="_blank">{{ $dentist->title }}</a></span><br>
                 <span>Адреса: </span><span class="text-secondary">{{ $dentist->address }}</span><br>
             </div>
             <div class="row mt-3">

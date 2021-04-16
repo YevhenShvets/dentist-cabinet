@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __('Реєстарція') }}</div>
+                <div class="card-header text-center" style="font-size:30px; background: rgba(214,200,241,0.18);">{{ __('Реєстарція користувача') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -117,19 +117,19 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group row">
+                        <div class="form-group row">
                             <div class="offset-5 text-center">
                                 <div class="">
-                                    <input class="form-check-input" type="checkbox" name="person_dentist" value="" id="person_dentist">
-                                    <label for="person_dentist" style="margin-right:5px">Стоматолог</label>
+                                    <input class="form-check-input" type="checkbox" name="person_dentist" value="1" id="person_dentist">
+                                    <label for="person_dentist" style="margin-right:5px">Зареєструватись як стоматолог?</label>
                                 </div>
                             </div>
                             
-                        </div> -->
+                        </div>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="col-md-10 offset-md-5">
+                                <button type="submit" class="btn" style=" background: rgba(214,200,241,0.18); border:1px solid gray; padding:10px 50px;">
                                     {{ __('Реєстарація') }}
                                 </button>
                             </div>

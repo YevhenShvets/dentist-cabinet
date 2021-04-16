@@ -4,8 +4,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card bg-primary">
-                <div class="card-header">{{ __('Авторизація адміна') }}</div>
+            <div class="card bg-light">
+                <div class="card-header text-center" style="font-size: 30px; background:#f0f7e2">{{ __('Зайти як адміністратор') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('admin.login') }}">
@@ -41,7 +41,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn" style="background:#f0f7e2;">
                                     {{ __('Авторизуватись') }}
                                 </button>
 

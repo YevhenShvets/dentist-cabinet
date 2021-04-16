@@ -15,11 +15,11 @@ class CreateDentistTable extends Migration
     {
         Schema::create('dentist', function (Blueprint $table) {
             $table->unsignedBigInteger('dentist_id');
-            $table->unsignedBigInteger('clinic_id');
+            $table->unsignedBigInteger('clinic_id')->nullable();
             $table->binary('photo')->nullable();
 
-            $table->foreign('dentist_id')->references('id')->on('users');
-            $table->foreign('clinic_id')->references('id')->on('clinic');
+            $table->foreign('dentist_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('clinic_id')->references('id')->on('clinic')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

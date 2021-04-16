@@ -17,7 +17,7 @@ class CreateClinicTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('address');
-            $table->string('description');
+            $table->string('description');            
         });
     }
 

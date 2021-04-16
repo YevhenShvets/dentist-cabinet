@@ -91,7 +91,7 @@
                                 <label for="clinic_id" class="col-md-4 col-form-label text-md-right">{{ __('Ідентифікатор клініки') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="clinic_id" type="text" class="form-control @error('clinic_id') is-invalid @enderror" name="clinic_id" value="{{ $dentist->clinic_id }}" required autocomplete="clinic_id">
+                                    <input id="clinic_id" type="text" readonly class="form-control @error('clinic_id') is-invalid @enderror" name="clinic_id" value="{{ $dentist->clinic_id }}" autocomplete="clinic_id">
 
                                     @error('clinic_id')
                                         <span class="invalid-feedback" role="alert">

@@ -38,7 +38,7 @@ class UserController extends Controller
                 'active' => true
             );
             MyDB::insert_record($data);
-            MyDB::insert_chat(MyDB::select_record_id($request->input("person_id"), $request->input("dentist_id")));
+            MyDB::insert_chat(MyDB::select_record_id($request->input("person_id"), $request->input("dentist_id"), $date_record));
             return redirect()->route('cabinet');
         }
     }
@@ -48,17 +48,46 @@ class UserController extends Controller
         $records_dentist = MyDB::select_records_for_dentist($user_id);
         $records_info = MyDB::select_records_info($user_id);
         $person_id = MyDB::select_person_id($user_id);
-        return  view('user.cabinet', ['recordsDentist' => $records_dentist, 'records' => $records_info, 'person' => $person_id]);
+
+        $today = MyDB::select_records_today($user_id);
+        $tomorrow = MyDB::select_records_tomorrow($user_id);
+        $another = MyDB::select_records_another($user_id);
+
+        return  view('user.cabinet', ['records' => $records_info, 'person' => $person_id, 'today' => $today, 'tomorrow' => $tomorrow, 'another' => $another]);
+    }
+
+    public function cabinet_feedback(Request $request){
+        $user_id = $request->user()->id;
+        $message = $request->input('message');
+        MyDB::insert_feedback($user_id, $message, new DateTime());
+
+        return redirect()->route('cabinet');
     }
 
     public function record_info(Request $request, $id){
         $user_id = $request->user()->id;
         $record_data = MyDB::select_record_info($id);
-        $person_info = MyDB::get_person_data($user_id);
-        if($person_info) $person_info = NULL;
-        else $person_info = MyDB::get_user_data($user_id);
+        $person_info = MyDB::get_person_data($record_data->person_id);
+        if($record_data->person_id==$user_id) $person_info = NULL;
+        //else $person_info = MyDB::get_user_data($user_id);
         $messages = MyDB::select_messages($id);
+        //dd($person_info);
         return  view('user.record', ['record' => $record_data, 'person_info' => $person_info, 'messages' => $messages]);
+    }
+
+    public function record_new_date(Request $request, $id){
+        $date_record = new DateTime(($request->input("date_record")));
+        $date_record->setTime(intval($request->input("time_record")), 00);
+
+        MyDB::update_record($id, $date_record);
+
+        return redirect()->route('record_info', $id);
+    }
+
+    public function record_delete(Request $req, $id){
+        $record_id = $req->input('record_id');
+        MyDB::delete_record($record_id);
+        return redirect()->route('cabinet');
     }
 
     public function message_create(Request $request, $id){
@@ -76,7 +105,7 @@ class UserController extends Controller
     public function settings(Request $request){
         $user_id = $request->user()->id;
         $user_data = MyDB::get_user_data($user_id);
-        $dentist = MyDB::select_dentist_info($user_id);
+        $dentist = MyDB::select_dentist_info_($user_id);
         return  view('user.settings', ['user' => $user_data, 'dentist' => $dentist]);
     }
 
@@ -104,7 +133,6 @@ class UserController extends Controller
                 'phone' => $request->input("phone")
             );
             MyDB::update_user_data($data);
-            MyDB::insert_person($request->user()->id);
             return redirect()->route('cabinet');
         }
     }
@@ -116,7 +144,6 @@ class UserController extends Controller
             'surname' => ['required', 'string', 'max:255'],
             'date_birthday' => ['required', 'date'],
             'phone' => ['required', 'string', 'max:20'],
-            'clinic_id' => ['required'],
             'dentist_photo' => ['required']
         ]);
 
@@ -140,7 +167,6 @@ class UserController extends Controller
             );
             $data1 = array(
                 'id' => $request->user()->id,
-                'clinic_id' => $request->input("clinic_id"),
                 'photo' => $photo_data
             );
             MyDB::update_user_data($data);

@@ -19,9 +19,9 @@ class CreateRecordTable extends Migration
             $table->unsignedBigInteger('dentist_id');
             $table->dateTime('date_record');
             $table->boolean('active');
-
-            $table->foreign('dentist_id')->references('dentist_id')->on('dentist');
-            $table->foreign('person_id')->references('person_id')->on('person');
+            $table->dateTime('date_first');
+            $table->foreign('dentist_id')->references('dentist_id')->on('dentist')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('person_id')->references('person_id')->on('person')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
