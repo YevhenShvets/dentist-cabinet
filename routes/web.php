@@ -39,7 +39,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
     Route::get('/edit/clinic/{id}', [App\Http\Controllers\AdminController::class, 'edit_clinic'])->name('admin.edit_clinic');
     Route::post('/edit/clinic/{id}', [App\Http\Controllers\AdminController::class, 'edit_clinic_submit'])->name('admin.edit_clinic_submit');
-    
+    Route::post('/delete/clinic/', [App\Http\Controllers\AdminController::class, 'delete_clinic_submit'])->name('admin.delete_clinic_submit');
     
     Route::get('/feedbacks', [App\Http\Controllers\AdminController::class, 'show_feedbacks'])->name('admin.show_feedbacks');
     Route::post('/feedbacks', [App\Http\Controllers\AdminController::class, 'show_feedbacks_submit'])->name('admin.show_feedbacks_submit');

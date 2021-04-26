@@ -152,4 +152,10 @@ class AdminController extends Controller
 
         return redirect()->route('admin.show_contacts');
     }
+
+    public function delete_clinic_submit(Request $request){
+        $id = $request->input('id');
+        MyDB::delete_clinic($id);
+        return redirect()->route('admin.home');
+    }
 }

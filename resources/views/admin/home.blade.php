@@ -10,6 +10,7 @@
       <div class="d-flex justify-content-center">
         <a href="{{ route('admin.add_clinic') }}" class="btn btn-outline-primary m-2">Добавити поліклініку</a><br>
         <a href="{{ route('home') }}" class="btn btn-warning m-2">Редагувати поліклініку</a><br>
+        <a href="{{ route('home') }}" class="btn btn-danger m-2">Вилучити поліклініку</a><br>
       </div>
         <a href="{{ route('admin.add_dentist') }}" class="btn btn-outline-secondary m-2">Добавити стоматолога</a><br>
         <a href="{{ route('admin.delete_user') }}" class="btn btn-outline-danger m-2">Вилучити користувача</a><br>

@@ -14,7 +14,7 @@
                         <h5 class="card-title">Дата: {{ date('d.m.Y H:i', strtotime($record->date_record)) }}</h5>
                         <p class="card-text">Лікар: {{ $record->surname }} {{ $record->name }}  {{ $record->middlename }}</p>
                         <a href="{{ route('record_info', ['id' => $record->id]) }}" class="card-link">Детальніше</a>
-                        @if($record->date_record != $record->date_first)
+                        @if(\Carbon\Carbon::parse($record->date_record) != \Carbon\Carbon::parse($record->date_first))
                         <br>
                         <div class="text-right">
                         <span style="font-weight:bold;">дата змінена*</span>

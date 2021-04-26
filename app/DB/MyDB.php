@@ -234,7 +234,7 @@ class MyDB
 
     public static function insert_record($array){
         DB::insert("INSERT INTO record(person_id, dentist_id, date_record, active, date_first) VALUES(?, ?, ?, ?, ?);",
-            [$array['person_id'], $array['dentist_id'], $array['date_record'], $array['active'], new DateTime()]);
+            [$array['person_id'], $array['dentist_id'], $array['date_record'], $array['active'], $array['date_record']]);
     }
 
     public static function insert_chat($id_record){
@@ -272,5 +272,9 @@ class MyDB
 
     public static function update_contact($id){
         DB::update("UPDATE contacts SET answered=1 WHERE id=?", [$id]);
+    }
+
+    public static function delete_clinic($id){
+        DB::delete("DELETE FROM clinic WHERE id =?", [$id]);
     }
 }

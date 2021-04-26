@@ -53,6 +53,11 @@
                                             <a href="{{ route('clinic', $clinic->id) }}" class="text-center btn">Детальніше</a>
                                             @auth('admin')
                                                 <a class="btn btn-warning" href="{{ route('admin.edit_clinic', $clinic->id) }}">Редагувати</a>
+                                                <form action="{{ route('admin.delete_clinic_submit') }}" method="post">
+                                                    @csrf
+                                                    <input type="text" value="{{$clinic->id}}" hidden name="id">
+                                                    <button type="submit" class="btn btn-danger mt-2">Видалити</button>
+                                                </form>
                                             @endauth
                                         </div>
                                     </div>
