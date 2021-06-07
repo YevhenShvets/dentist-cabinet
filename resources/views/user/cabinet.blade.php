@@ -3,6 +3,12 @@
 @section('title')Кабінет користувача@endsection
 
 @section('content')
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.css"/>
+    
     <div class="container">
         @isset($person)
             <h3 class="text-center">Мої записи</h3>
@@ -29,7 +35,7 @@
             @endisset
         @else
             <h3 class="text-center">Записи до мене</h3>
-            <div>
+            <!-- <div>
                 <h3>На сьогодні ({{ date('d.m.Y', strtotime(now())) }})</h3>
                 <hr>
                 <div class="container row justify-content-center">
@@ -83,7 +89,9 @@
                     @endforelse
                     @endisset
                 </div>
-            </div>
+            </div> -->
+            {!! $calendar->calendar() !!}
+            {!! $calendar->script() !!}
         @endisset
         @isset($person)
         <hr>

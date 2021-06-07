@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\DB\MyDB;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
+use Acaronlex\LaravelCalendar\Calendar;
 
 class UserController extends Controller
 {
@@ -52,8 +53,43 @@ class UserController extends Controller
         $today = MyDB::select_records_today($user_id);
         $tomorrow = MyDB::select_records_tomorrow($user_id);
         $another = MyDB::select_records_another($user_id);
+        $events = [];
 
-        return  view('user.cabinet', ['records' => $records_info, 'person' => $person_id, 'today' => $today, 'tomorrow' => $tomorrow, 'another' => $another]);
+        $alll = MyDB::select_records_alll($user_id);
+        foreach($alll as $a){
+            $events[] = Calendar::event(
+                $a->name.' '.$a->middlename.' '.$a->surname,
+                false, 
+                $a->date_record,
+                $a->date_record, 
+                $a->id,
+                [
+                    'record_id' => 'http://full-calendar.io',
+                ]
+            );
+        }
+        
+        $calendar = new Calendar();
+                $calendar->addEvents($events)
+                ->setOptions([
+                    'locale' => 'uk',
+                    'firstDay' => 1,
+                    'displayEventTime' => false,
+                    'selectable' => true,
+                    'initialView' => 'dayGridMonth',
+                    'themeSystem' => 'standard',
+                    // 'headerToolbar' => [
+                    //     'end' => 'dayGridMonth timeGridWeek timeGridDay'
+                    // ]
+                ]);
+                $calendar->setId('1');
+                $calendar->setCallbacks([
+                    'select' => 'function(selectionInfo){}',
+                    'eventClick' => 'function(info){ window.location.href = "cabinet/record/" + info.event.id; }'
+                ]);
+
+
+        return  view('user.cabinet', ['records' => $records_info, 'calendar' => $calendar, 'person' => $person_id, 'today' => $today, 'tomorrow' => $tomorrow, 'another' => $another]);
     }
 
     public function cabinet_feedback(Request $request){

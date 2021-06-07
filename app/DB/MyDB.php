@@ -105,6 +105,10 @@ class MyDB
         return $info;
     }
 
+    public static function select_records_alll($dentist_id){
+        return DB::select("SELECT r.id, r.date_record, r.date_first, u.name, u.surname, u.middlename, u.email, u.phone  FROM record as r INNER JOIN users as u ON u.id=r.person_id WHERE r.active=1 AND r.dentist_id=? ORDER BY r.date_record;", [$dentist_id]);
+    }
+
     public static function select_records_today($dentist_id){
         return DB::select("SELECT r.id, r.date_record, r.date_first, u.name, u.surname, u.middlename, u.email, u.phone  FROM record as r INNER JOIN users as u ON u.id=r.person_id WHERE r.active=1 AND r.dentist_id=?  AND DATE(r.date_record)=DATE(NOW()) AND r.date_record > NOW() ORDER BY r.date_record;", [$dentist_id]);
     }
