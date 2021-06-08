@@ -13,6 +13,7 @@ class UserController extends Controller
 {
     public function dentist_record(Request $request, $dentist_id){
         $dentist_info = MyDB::select_dentist_info($dentist_id);
+        $events = [];
         $all_event_for_dentist = MyDB::select_records_alll($dentist_id);
         foreach($all_event_for_dentist as $a){
             $events[] = Calendar::event(
@@ -29,8 +30,10 @@ class UserController extends Controller
         }
         
         $calendar = new Calendar();
-                $calendar->addEvents($events)
-                ->setOptions([
+        if(count($events) > 0)
+                $calendar->addEvents($events);
+
+                $calendar->setOptions([
                     'locale' => 'uk',
                     'firstDay' => 1,
                     'displayEventTime' => false,
