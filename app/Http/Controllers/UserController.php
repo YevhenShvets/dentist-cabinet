@@ -13,7 +13,50 @@ class UserController extends Controller
 {
     public function dentist_record(Request $request, $dentist_id){
         $dentist_info = MyDB::select_dentist_info($dentist_id);
-        return view('user.dentist', ['dentist' => $dentist_info]);
+        $all_event_for_dentist = MyDB::select_records_alll($dentist_id);
+        foreach($all_event_for_dentist as $a){
+            $events[] = Calendar::event(
+                '',
+                false, 
+                $a->date_record,
+                $a->date_record, 
+                $a->id,
+                [
+                    'record_id' => 'http://full-calendar.io',
+                    'backgroundColor' => '#ED1317',
+                ]
+            );
+        }
+        
+        $calendar = new Calendar();
+                $calendar->addEvents($events)
+                ->setOptions([
+                    'locale' => 'uk',
+                    'firstDay' => 1,
+                    'displayEventTime' => false,
+                    'allDaySlot' => false,
+                    'slotDuration' => '00:60:00',
+                    'height' => 'auto',
+                    'initialView' => 'timeGridWeek',
+                    'slotMinTime' => '08:00:00',
+                    'slotMaxTime' => '21:00:00',
+                    'themeSystem' => 'standard',
+                    
+                ]);
+                $calendar->setId('1');
+                $calendar->setCallbacks([
+                    'dateClick' => 'function(info){ 
+                        var myDate = new Date(info.dateStr);
+                        if(myDate.getDay() == 6 || myDate.getDay() == 0) alert("Вихідний!");
+                        else{
+                        document.getElementById("date_record").setAttribute("value", moment(new Date(info.dateStr)).format("DD.MM.YYYY")); 
+                        document.getElementById("time_record").setAttribute("value", moment(new Date(info.dateStr)).format("HH:mm")); 
+                        document.getElementById("record_modal").click() 
+                        }
+                    }'
+                ]);
+
+        return view('user.dentist', ['dentist' => $dentist_info, 'calendar' => $calendar]);
     }
 
     public function dentist_record_create(Request $request, $id){
@@ -78,9 +121,9 @@ class UserController extends Controller
                     'selectable' => true,
                     'initialView' => 'dayGridMonth',
                     'themeSystem' => 'standard',
-                    // 'headerToolbar' => [
-                    //     'end' => 'dayGridMonth timeGridWeek timeGridDay'
-                    // ]
+                    'headerToolbar' => [
+                        'end' => 'dayGridMonth timeGridWeek'
+                    ]
                 ]);
                 $calendar->setId('1');
                 $calendar->setCallbacks([

@@ -3,6 +3,12 @@
 @section('title')Запис до стоматолога@endsection
 
 @section('content')
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.css"/>
+    
     <div class="container">
         <div class="">
                 @isset($dentist->photo)
@@ -25,53 +31,47 @@
                 <span>Адреса: </span><span class="text-secondary">{{ $dentist->address }}</span><br>
             </div>
             <div class="row mt-3">
-                <div class="col-6 offset-3">
-                    <div class="card text-center">
-                        <div class="card-header" style="font-size:large;">Запис</div>
-                        <div class="card-body">
-                            <form action="{{ route('dentist_record_create', ['id'=>$dentist->id]) }}" method="POST">
-                                @csrf
-                                <input type="text" name="person_id" value="{{ Auth::user()->id }}" hidden>
-                                <input type="text" name="dentist_id" value="{{ $dentist->id }}" hidden>
-                                <div class="form-group row">
-                                    <label for="date_record" class="col-md-4 col-form-label text-md-right">{{ __('Дата') }}</label>
-                                    <div class="col-md-6">
-                                        <!-- value="{{ date('Y-m-d') }}" -->
-                                        <input id="date_record" type="date" min="{{ date('Y-m-d') }}" class="form-control @error('date_record') is-invalid @enderror" name="date_record"  required autocomplete="date_record">
-                                        @error('date_record')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="time_record" class="col-md-4 col-form-label text-md-right">{{ __('Час') }}</label>
-                                    <div class="col-md-6">
-                                        <!-- value="{{ date('Y-m-d') }}" -->
-                                        <!-- <input id="time_record" type="time" min="10:00" max="21:00" step="3600" class="form-control @error('time_record') is-invalid @enderror" name="time_record"  required autocomplete="time_record"> -->
-                                        <select id="time_record" class="form-control @error('time_record') is-invalid @enderror" name="time_record"  required autocomplete="time_record">
-                                            @for($i = 10; $i < 21; $i+=1)
-                                                <option value="{{ $i }}">{{ $i }}</option>
-                                            @endfor
-                                        </select>
-                                        @error('time_record')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group mb-0">
-                                    <div class="d-flex justify-content-center">
-                                        <button submit class="btn btn-outline-info btn-lg">Вибрати</button>
-                                    </div>
-                                </div>    
-                            </form>
+                <div class="col-8 offset-2">
+                    {!! $calendar->calendar() !!}
+                    {!! $calendar->script() !!}
+                </div>
+
+                <button id="record_modal" data-toggle="modal" data-target="#rmodal" hidden></button>
+                <div class="modal fade" id="rmodal" tabindex="-1" role="dialog" aria-labelledby="rmodal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalLabel">Запис</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        <form action="{{ route('dentist_record_create', ['id'=>$dentist->id]) }}" method="POST">
+                            @csrf
+                            <input type="text" name="person_id" value="{{ Auth::user()->id }}" hidden>
+                            <input type="text" name="dentist_id" value="{{ $dentist->id }}" hidden>
+                            <input id="date_record" class="form-control" style="margin-bottom: 10px" name="date_record"  required readonly autocomplete="date_record">
+                            <input type="text" name="time_record" id="time_record" class="form-control" style="margin-bottom: 10px" readonly>
+
+                            <div style="text-align:center;">
+                                <input type="submit" value="Записатися" class="btn btn-success" style="">
+                            </div>
+                        </form>
+                        </div>
                         </div>
                     </div>
                 </div>
+
+                <script>
+                    $(document).ready(function(){
+                        $('#record_modal').on('show.bs.modal', function (event) {
+                            var data = button.data('whatever');
+                            var modal = $(this);
+                            modal.find('.modal-body #time_record').val(data);
+                        });
+                    });
+        </script>
             </div>
         @endisset
         
